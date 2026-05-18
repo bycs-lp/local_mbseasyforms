@@ -100,4 +100,15 @@ class mbseasyforms {
             ]);
         }
     }
+
+    /**
+     * Update the easyforms config with the default settings.
+     *
+     * @return void
+     */
+    public static function update_default_config(): void {
+        global $CFG;
+        require_once($CFG->dirroot . '/local/mbseasyforms/defaultsettings.php');
+        set_config('easyformsconfig', DEFAULT_SETTING, 'local_mbseasyforms');
+    }
 }

@@ -61,7 +61,7 @@ define('DEFAULT_SETTING', <<<'EOT'
         {
             "_comment": "Aufgabe",
             "default_disabled": false,
-            "elements": ["fitem_id_introeditor", "fitem_id_showdescription", "fgroup_id_submissionplugins", "fgroup_id_ggbturlinput", "fitem_id_usefile", "fitem_id_completion", "id_completionsubmit", "id_completionview", "id_completionusegrade", "id_completionpassgrade"]
+            "elements": ["fitem_id_introeditor", "fitem_id_showdescription", "fgroup_id_submissionplugins", "fgroup_id_feedbackplugins", "fgroup_id_ggbturlinput", "fitem_id_usefile", "fitem_id_completion", "id_completionsubmit", "id_completionview", "id_completionusegrade", "id_completionpassgrade", "fitem_id_assignfeedback_aif_prompt", "fitem_id_assignfeedback_aif_expertmodebtn", "id_assignfeedback_aif_autogenerate", "fitem_id_assignfeedback_aif_aicontrolnotice", "fitem_id_assignfeedback_aif_datasharingnotice", "fitem_id_assignfeedback_aif_file"]
         },
         "page-mod-chat-mod":
         {

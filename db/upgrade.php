@@ -46,5 +46,12 @@ function xmldb_local_mbseasyforms_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024082801, 'local', 'mbseasyforms');
     }
 
+    if ($oldversion < 2026051800) {
+        // Update easyforms config with current default settings.
+        \local_mbseasyforms\mbseasyforms::update_default_config();
+
+        upgrade_plugin_savepoint(true, 2026051800, 'local', 'mbseasyforms');
+    }
+
     return true;
 }
