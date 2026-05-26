@@ -262,16 +262,11 @@ const mbseasyforms = async (params) => {
                     // Show hidden elements.
                     easyformsdisable();
 
-                    // Scroll to top if clicked on bottom.
-                    if (this.id === 'scrolltop') {
-                        document.getElementById('page').scrollTo({top: 265, left: 0, behavior: "smooth"});
-                        // Matomo tracking.
-                        if (typeof _paq !== 'undefined') {
+                    // Matomo tracking.
+                    if (typeof _paq !== 'undefined') {
+                        if (this.id === 'scrolltop') {
                             _paq.push(['trackEvent', 'Easyforms', 'Click disable bottom link', 'Bottom link disable']);
-                        }
-                    } else {
-                        // Matomo tracking.
-                        if (typeof _paq !== 'undefined') {
+                        } else {
                             _paq.push(['trackEvent', 'Easyforms', 'Click disable easyforms', 'Disable']);
                         }
                     }
@@ -280,7 +275,9 @@ const mbseasyforms = async (params) => {
         });
         // Click disable easyforms - bottom link.
         document.querySelectorAll(".mbseasytoggle .bottom").forEach(element => {
-            element.addEventListener("click", function() {
+            element.addEventListener("click", function(e) {
+                // Prevent default scroll to top section by href="#" after click on link.
+                e.preventDefault();
                 if (!document.querySelector(".mbseasytoggle .full").classList.contains("active")) {
                     // Reflect change to button.
                     document.querySelectorAll(".mbseasytoggle .full").forEach(fullElement => {
@@ -296,8 +293,8 @@ const mbseasyforms = async (params) => {
                     // Show hidden elements.
                     easyformsdisable();
 
-                    // Scroll to top.
-                    document.getElementById('page').scrollTo({top: 265, left: 0, behavior: "smooth"});
+                    // Keep the clicked element in view after layout shift.
+                    this.scrollIntoView({block: 'nearest', behavior: 'instant'});
                 }
             });
         });
