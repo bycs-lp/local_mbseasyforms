@@ -135,7 +135,7 @@ const mbseasyforms = async (params) => {
                         element.classList.add(css_hide, 'mbstoggle');
                     } else {
                         // Make sure it is visible.
-                        element.closest('.fcontainer').classList.remove('collapse');
+                        element.closest('.fcontainer')?.classList.remove('collapse');
                         // Mark element as to show.
                         element.classList.add('easyShow');
                     }
