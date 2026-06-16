@@ -56,17 +56,22 @@ const mbseasyforms = async (params) => {
     document.querySelectorAll('form.mform').forEach(form => form.classList.add('show'));
     const mform = document.querySelector('#page form.mform');
 
-    const body_id = document.querySelector('body').id;
-    // exceptions to .collapsible-actions
-    const exceptions = ['page-enrol-editinstance'];
+    const bodyId = document.querySelector('body').id;
 
     // Since Moodle 4.3 you can pass the URL parameter "showonly=..." to an edit form to only show a specific section of the form.
     // In this case we do not want easyforms to hide anything, because the user already specified what he wants to see.
     const isShowOnlyPage = (new URL(document.location)).searchParams.has('showonly');
 
-    // Check if there is a form with collapsible-actions on the page.
-    const collapsible = document.querySelector('.collapsible-actions');
-    if (mform !== null && (collapsible !== null || exceptions.includes(body_id)) && !isShowOnlyPage) {
+    // Read the page config. Easyforms only runs on pages that have a config entry with elements,
+    // regardless of whether the page provides a .collapsible-actions container.
+    let pageConfig = null;
+    try {
+        pageConfig = JSON.parse(document.getElementById("mbseasyforms_config").textContent)[bodyId] ?? null;
+    } catch (e) {
+        Log.error("EasyForm-Plugin: Error in JSON-Config: " + e);
+    }
+
+    if (mform !== null && pageConfig?.elements && !isShowOnlyPage) {
         /*variables*/
         /**********/
         var tmp = params.split('#!#');
@@ -87,10 +92,10 @@ const mbseasyforms = async (params) => {
         var has_config = false;
         var id_arr = [];
         // Read config.
-        if (config[body_id]) {
-            default_disabled = config[body_id].default_disabled;
-            if (config[body_id].elements) {
-                id_arr = config[body_id].elements;
+        if (config[bodyId]) {
+            default_disabled = config[bodyId].default_disabled;
+            if (config[bodyId].elements) {
+                id_arr = config[bodyId].elements;
                 has_config = true;
             }
         }
@@ -153,7 +158,7 @@ const mbseasyforms = async (params) => {
             }
         });
         // Show easyforms option in user profile.
-        if (body_id == 'page-user-editadvanced' || body_id == 'page-user-edit') {
+        if (bodyId == 'page-user-editadvanced' || bodyId == 'page-user-edit') {
             const container = document.getElementById('id_category_1container');
             container.closest('.fcontainer').classList.remove('collapse');
             container.classList.remove('collapse');
@@ -184,7 +189,18 @@ const mbseasyforms = async (params) => {
             alignright: collapseallalign === 'right',
         };
         const {html, js} = await Templates.renderForPromise('local_mbseasyforms/collapseswitch', collapseConfig);
-        Templates.replaceNodeContents('.collapsible-actions', html, js);
+        const collapsibleActions = document.querySelector('.collapsible-actions');
+        if (collapsibleActions) {
+            Templates.replaceNodeContents(collapsibleActions, html, js);
+        } else {
+            // Exception pages (e.g. page-enrol-editinstance) have no .collapsible-actions container.
+            // Create a row wrapper at the top of the form so the toggle renders in the same place
+            // (and with the same grid alignment) as on regular pages.
+            const wrapper = document.createElement('div');
+            wrapper.className = 'row collapsible-actions';
+            mform.prepend(wrapper);
+            Templates.replaceNodeContents(wrapper, html, js);
+        }
 
         // Create bottom toggle link.
         const buttonGroup = getActionButtonContainer();
@@ -291,7 +307,8 @@ const mbseasyforms = async (params) => {
             element.addEventListener("click", function(e) {
                 // Prevent default scroll to top section by href="#" after click on link.
                 e.preventDefault();
-                if (!document.querySelector(".mbseasytoggle .full").classList.contains("active")) {
+                const fullToggle = document.querySelector(".mbseasytoggle .full");
+                if (!fullToggle.classList.contains("active")) {
                     // Reflect change to button.
                     document.querySelectorAll(".mbseasytoggle .full").forEach(fullElement => {
                         fullElement.classList.add("active");
