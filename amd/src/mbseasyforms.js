@@ -188,24 +188,41 @@ const mbseasyforms = async (params) => {
 
         // Create bottom toggle link.
         const buttonGroup = getActionButtonContainer();
+        // Shared markup for the "show all" link.
+        const showAllLink = () =>
+            `<a href='#' role='button' class='easyform bottom ${theme} btn btn-link p-1'>
+                <span>${showallstring}</span>
+            </a>`;
         if (buttonGroup) {
             if (isStickyFooterActionContainer(buttonGroup)) {
                 const stickyButtonRow = buttonGroup.querySelector(':scope > span > .d-flex.flex-wrap.align-items-center');
                 if (stickyButtonRow) {
                     stickyButtonRow.insertAdjacentHTML('beforeend',
                         `<div class='mb-3 fitem mbseasytoggle link stickyfooterlink'>
-                            <a href='#' id='scrolltop' role='button' class='easyform bottom ${theme} btn btn-link p-1'>
-                                <span>${showallstring}</span>
-                            </a>
+                            ${showAllLink()}
                         </div>`
                     );
+                }
+                // Also add the link to the bottom of the form, since the action buttons now live in the sticky footer.
+                if (mform) {
+                    const bottomLinkHtml =
+                        `<div class='form-group row mbseasytoggle link'>
+                            <div class='col-md-9 text-start'>
+                                ${showAllLink()}
+                            </div>
+                        </div>`;
+                    // If there is a required description field, place the link before it, otherwise at the end of the form.
+                    const requiredDescription = mform.querySelector('.fdescription.required');
+                    if (requiredDescription) {
+                        requiredDescription.insertAdjacentHTML('beforebegin', bottomLinkHtml);
+                    } else {
+                        mform.insertAdjacentHTML('beforeend', bottomLinkHtml);
+                    }
                 }
             } else {
                 buttonGroup.insertAdjacentHTML('afterbegin',
                     `<div class='col-md-9 offset-md-3 mbseasytoggle link'>
-                        <a href='#' id='scrolltop' role='button' class='easyform bottom ${theme} btn btn-link p-1'>
-                            <span>${showallstring}</span>
-                        </a>
+                        ${showAllLink()}
                     </div>`
                 );
             }
@@ -264,11 +281,7 @@ const mbseasyforms = async (params) => {
 
                     // Matomo tracking.
                     if (typeof _paq !== 'undefined') {
-                        if (this.id === 'scrolltop') {
-                            _paq.push(['trackEvent', 'Easyforms', 'Click disable bottom link', 'Bottom link disable']);
-                        } else {
-                            _paq.push(['trackEvent', 'Easyforms', 'Click disable easyforms', 'Disable']);
-                        }
+                        _paq.push(['trackEvent', 'Easyforms', 'Click disable easyforms', 'Disable']);
                     }
                 }
             });
@@ -295,6 +308,11 @@ const mbseasyforms = async (params) => {
 
                     // Keep the clicked element in view after layout shift.
                     this.scrollIntoView({block: 'nearest', behavior: 'instant'});
+
+                    // Matomo tracking.
+                    if (typeof _paq !== 'undefined') {
+                        _paq.push(['trackEvent', 'Easyforms', 'Click disable bottom link', 'Bottom link disable']);
+                    }
                 }
             });
         });
