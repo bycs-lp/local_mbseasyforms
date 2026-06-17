@@ -131,6 +131,11 @@ const mbseasyforms = async (params) => {
                         }
                     }
 
+                    // Show nested fitems (e.g. date_time_selector sub-rows) if their parent fitem is shown.
+                    if (hide && element.closest('.fitem.easyShow') !== null) {
+                        hide = false;
+                    }
+
                     if (hide) {
                         element.classList.add(css_hide, 'mbstoggle');
                     } else {
