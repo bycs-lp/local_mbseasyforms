@@ -53,5 +53,12 @@ function xmldb_local_mbseasyforms_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2026051800, 'local', 'mbseasyforms');
     }
 
+    if ($oldversion < 2026061700) {
+        // Reset easyformsconfig to current DEFAULT_SETTING (includes new moodleoverflow config).
+        \local_mbseasyforms\mbseasyforms::update_default_config();
+
+        upgrade_plugin_savepoint(true, 2026061700, 'local', 'mbseasyforms');
+    }
+
     return true;
 }

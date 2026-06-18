@@ -99,6 +99,12 @@ define('DEFAULT_SETTING', <<<'EOT'
             "default_disabled": false,
             "elements": ["fitem_id_introeditor", "fitem_id_showdescription", "fitem_id_type", "fitem_id_completion", "id_completionview", "fitem_id_completiongradeitemnumber", "id_completionpassgrade", "fgroup_id_completionpostsgroup", "id_completionposts", "fgroup_id_completiondiscussionsgroup", "id_completiondiscussions", "fgroup_id_completionrepliesgroup", "id_completionreplies"]
         },
+        "page-mod-moodleoverflow-mod":
+        {
+            "_comment": "Moodleoverflow Forum",
+            "default_disabled": false,
+            "elements": ["fitem_id_introeditor", "fitem_id_showdescription", "fitem_id_anonymous", "fitem_id_needsreview", "fitem_id_la_starttime", "fitem_id_la_endtime"]
+        },
         "page-mod-workshop-mod":
         {
             "_comment": "Gegenseitige Beurteilung",
