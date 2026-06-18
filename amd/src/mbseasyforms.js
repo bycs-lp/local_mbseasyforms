@@ -27,6 +27,7 @@
 
 import Pending from 'core/pending';
 import Templates from 'core/templates';
+import Log from 'core/log';
 
 let css_hide = "easyhide";
 
@@ -200,6 +201,12 @@ const mbseasyforms = async (params) => {
             wrapper.classList.add('row', 'collapsible-actions');
             mform.prepend(wrapper);
             Templates.replaceNodeContents(wrapper, html, js);
+        }
+
+        // Remove the collapse-all switch when the form has no collapsible sections,
+        // otherwise it would be revealed (empty and useless) when easyforms is disabled.
+        if (document.querySelector('fieldset.collapsible') === null) {
+            document.querySelectorAll('.mbseasycollapseall.collapsemenu').forEach(element => element.remove());
         }
 
         // Create bottom toggle link.
