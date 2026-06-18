@@ -197,7 +197,7 @@ const mbseasyforms = async (params) => {
             // Create a row wrapper at the top of the form so the toggle renders in the same place
             // (and with the same grid alignment) as on regular pages.
             const wrapper = document.createElement('div');
-            wrapper.className = 'row collapsible-actions';
+            wrapper.classList.add('row', 'collapsible-actions');
             mform.prepend(wrapper);
             Templates.replaceNodeContents(wrapper, html, js);
         }
