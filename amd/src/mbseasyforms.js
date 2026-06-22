@@ -194,7 +194,6 @@ const mbseasyforms = async (params) => {
         if (collapsibleActions) {
             Templates.replaceNodeContents(collapsibleActions, html, js);
         } else {
-            // Exception pages (e.g. page-enrol-editinstance) have no .collapsible-actions container.
             // Create a row wrapper at the top of the form so the toggle renders in the same place
             // (and with the same grid alignment) as on regular pages.
             const wrapper = document.createElement('div');
@@ -314,6 +313,7 @@ const mbseasyforms = async (params) => {
             element.addEventListener("click", function(e) {
                 // Prevent default scroll to top section by href="#" after click on link.
                 e.preventDefault();
+                // Full toggle should exist.
                 const fullToggle = document.querySelector(".mbseasytoggle .full");
                 if (!fullToggle.classList.contains("active")) {
                     // Reflect change to button.
