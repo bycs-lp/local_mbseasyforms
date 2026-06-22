@@ -29,7 +29,7 @@ function xmldb_local_mbseasyforms_install() {
     global $CFG;
 
     // Set custom profile field for easyforms.
-    \local_mbseasyforms\mbseasyforms::set_custom_profile_field();
+    \local_mbseasyforms\mbseasyforms::create_custom_profile_field();
 
     // Set default easyforms config.
     require_once($CFG->dirroot . '/local/mbseasyforms/defaultsettings.php');
