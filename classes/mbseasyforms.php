@@ -57,6 +57,9 @@ class mbseasyforms {
             \core\event\user_info_category_created::create_from_category($createdcategory)->trigger();
 
             // Set custom profile field for easyforms.
+            // In behat environments, default to disabled so easyforms does not
+            // interfere with other plugins' form-based tests.
+            $defaultenabled = (defined('BEHAT_SITE_RUNNING') && BEHAT_SITE_RUNNING) ? 0 : 1;
             $profilefield = [
                 'shortname' => 'mbseasyforms',
                 'name' => get_string('useeasyforms', 'local_mbseasyforms'),
@@ -69,7 +72,7 @@ class mbseasyforms {
                 'visible' => PROFILE_VISIBLE_PRIVATE,
                 'forceunique' => 0,
                 'signup' => 0,
-                'defaultdata' => 1,
+                'defaultdata' => $defaultenabled,
                 'defaultdataformat' => 0,
                 'param1' => '',
                 'param2' => '',
