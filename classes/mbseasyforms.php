@@ -43,6 +43,15 @@ class mbseasyforms {
     public static function set_custom_profile_field(): void {
         global $DB;
 
+        // Do not create the custom profile field while core unit tests are running,
+        // as it pollutes core state (e.g. oauth2 internal field list, primary navigation).
+        if (
+            class_exists(\local_mbs\hack\mbs_hack::class)
+            && \local_mbs\hack\mbs_hack::is_running_core_test()
+        ) {
+            return;
+        }
+
         $present = $DB->get_record('user_info_category', ['name' => get_string('pluginname', 'local_mbseasyforms')]);
 
         if (!$present) {
