@@ -14,6 +14,7 @@ Feature: Shortened create course menu
     Then I should see "Add a new course"
     And I should see "All Settings"
     And "Course full name" "field" should be visible
+    And I click on ".easy" "css_element" in the ".mbseasytoggle" "css_element"
     And "fieldset#id_general > div > div > h3" "css_element" should not be visible
 
   Scenario: Check course create Menu collapsed with mbseasyforms
@@ -21,6 +22,8 @@ Feature: Shortened create course menu
     When I navigate to "Courses > Add a new course" in site administration
     Then I should see "Add a new course"
     And I should see "All Settings"
+    And I click on ".easy" "css_element" in the ".mbseasytoggle" "css_element"
+    And "fieldset#id_general > div > div > h3" "css_element" should not be visible
     And I click on ".full" "css_element" in the ".mbseasytoggle" "css_element"
     And "fieldset#id_general > div > div > h3" "css_element" should be visible
     And "Course ID number" "field" should be visible
@@ -33,6 +36,7 @@ Feature: Shortened create course menu
     Given I log in as "admin"
     When I navigate to "Courses > Add a new course" in site administration
     Then I should see "Add a new course"
+    And I click on ".easy" "css_element" in the ".mbseasytoggle" "css_element"
     And I click on ".full" "css_element" in the ".mbseasytoggle" "css_element"
     And I should see "All Settings"
     And I click on ".collapsemenu" "css_element" in the ".collapsible-actions" "css_element"
