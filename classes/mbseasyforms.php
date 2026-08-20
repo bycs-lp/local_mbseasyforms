@@ -40,21 +40,25 @@ class mbseasyforms {
      * @return void
      * @throws \dml_exception
      */
-    public static function set_custom_profile_field(): void {
+    public static function create_custom_profile_field(): void {
         global $DB;
 
-        $present = $DB->get_record('user_info_category', ['name' => get_string('pluginname', 'local_mbseasyforms')]);
+        // Check by shortname to avoid creating a duplicate field.
+        if (!$DB->record_exists('user_info_field', ['shortname' => 'mbseasyforms'])) {
+            // Reuse an existing category if present; categories have no stable identifier,
+            // so the translated name is the best available lookup key.
+            $category = $DB->get_record('user_info_category', ['name' => get_string('pluginname', 'local_mbseasyforms')]);
+            if (!$category) {
+                // Create custom profile field category as seen in tool_moodlenet:
+                // No nice API to do this, so direct DB calls it is.
+                $data = new \stdClass();
+                $data->sortorder = $DB->count_records('user_info_category') + 1;
+                $data->name = get_string('pluginname', 'local_mbseasyforms');
+                $data->id = $DB->insert_record('user_info_category', $data, true);
 
-        if (!$present) {
-            // Create custom profile field category as seen in tool_moodlenet:
-            // No nice API to do this, so direct DB calls it is.
-            $data = new \stdClass();
-            $data->sortorder = $DB->count_records('user_info_category') + 1;
-            $data->name = get_string('pluginname', 'local_mbseasyforms');
-            $data->id = $DB->insert_record('user_info_category', $data, true);
-
-            $createdcategory = $DB->get_record('user_info_category', ['id' => $data->id]);
-            \core\event\user_info_category_created::create_from_category($createdcategory)->trigger();
+                $category = $DB->get_record('user_info_category', ['id' => $data->id]);
+                \core\event\user_info_category_created::create_from_category($category)->trigger();
+            }
 
             // Set custom profile field for easyforms.
             // In behat environments, default to disabled so easyforms does not
@@ -66,7 +70,7 @@ class mbseasyforms {
                 'datatype' => 'checkbox',
                 'description' => '<p>' . get_string('useeasyforms', 'local_mbseasyforms') . '<br></p>',
                 'descriptionformat' => 1,
-                'categoryid' => $data->id,
+                'categoryid' => $category->id,
                 'required' => 0,
                 'locked' => 0,
                 'visible' => PROFILE_VISIBLE_PRIVATE,
@@ -81,7 +85,6 @@ class mbseasyforms {
                 'param5' => '',
             ];
 
-            // Insert field.
             $DB->insert_record('user_info_field', $profilefield);
         }
     }
