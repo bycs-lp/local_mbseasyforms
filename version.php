@@ -23,6 +23,6 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2026071400;
+$plugin->version  = 2026082400;
 $plugin->requires  = 2024042200; // Support for 4.4 and above, due to Hook API.
 $plugin->component = 'local_mbseasyforms';

@@ -67,5 +67,12 @@ function xmldb_local_mbseasyforms_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2026062200, 'local', 'mbseasyforms');
     }
 
+    if ($oldversion < 2026082400) {
+        // Reset default config to include format_mimo course edit settings.
+        \local_mbseasyforms\mbseasyforms::update_default_config();
+
+        upgrade_plugin_savepoint(true, 2026082400, 'local', 'mbseasyforms');
+    }
+
     return true;
 }
