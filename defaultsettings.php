@@ -31,7 +31,7 @@ define('DEFAULT_SETTING', <<<'EOT'
             {
             "_comment": "Kurs erstellen",
             "default_disabled": false,
-            "elements": ["fitem_id_category", "fitem_id_format", "fitem_id_", "fitem_id_numsections", "fitem_id_activitytype", "fitem_id_numdiscussions", "fitem_id_newsitems"]
+            "elements": ["fitem_id_category", "fitem_id_format", "fitem_id_", "fitem_id_numsections", "fitem_id_activitytype", "fitem_id_numdiscussions", "fitem_id_newsitems", "id_enablemultisection", "id_enablefiltering", "id_distractionfree", "fitem_id_backgrounddesign", "fitem_id_activityprofile", "fitem_id_tag_preview"]
         },
         "page-course-editsection":
             {
